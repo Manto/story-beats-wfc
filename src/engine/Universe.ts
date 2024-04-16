@@ -7,9 +7,11 @@
 export class Universe {
   public static inkVersionCurrent = 21;
 
-  private _facts: Record<string, string | number | boolean> = {};
+  private _facts: UniverseFactsType = {};
 
   get facts() {
     return this._facts;
   }
 }
+
+export type UniverseFactsType = Record<string, string | number | boolean>
