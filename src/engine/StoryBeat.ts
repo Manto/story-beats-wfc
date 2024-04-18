@@ -12,22 +12,39 @@ export class StoryBeat {
   readonly beatType: BeatType = BeatType.Unknown;
   readonly inkFilename: string = "";
   readonly requirements: BeatRequirement[] = [];
+  readonly allowRepeatVisit: boolean = false;
 
   // How many times this beat has been played
   public visitCount: number = 0;
 
   constructor(
     beatId: string,
-    resolution: BeatResolution = 0,
-    beatType: BeatType = BeatType.Unknown,
-    inkFilename: string = "",
-    requirements: BeatRequirement[] = []
+    params?: {
+      resolution?: BeatResolution;
+      beatType?: BeatType;
+      inkFilename?: string;
+      requirements?: BeatRequirement[];
+      allowRepeatVisit?: boolean;
+    }
   ) {
     this.beatId = beatId;
-    this.resolution = resolution;
-    this.beatType = beatType;
-    this.inkFilename = inkFilename;
-    this.requirements = requirements;
+    if (params) {
+      if (params.resolution !== undefined) {
+        this.resolution = params.resolution;
+      }
+      if (params.beatType !== undefined) {
+        this.beatType = params.beatType;
+      }
+      if (params.inkFilename !== undefined) {
+        this.inkFilename = params.inkFilename;
+      }
+      if (params.requirements !== undefined) {
+        this.requirements = params.requirements;
+      }
+      if (params.allowRepeatVisit !== undefined) {
+        this.allowRepeatVisit = params.allowRepeatVisit;
+      }
+    }
   }
 }
 

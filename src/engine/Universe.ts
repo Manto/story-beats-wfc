@@ -33,9 +33,16 @@ export class Universe {
   /**
    * Store a visit to a new story beat.
    * @param storyBeat The ID of the story beat.
+   * @returns True if the visit was successfully stored.
    */
-  public visitStory(beat: StoryBeat): void {
+  public visitStory(beat: StoryBeat): boolean {
     const beatId = beat.beatId;
+
+    // Check if the beat allows repeat visits.
+    if (!beat.allowRepeatVisit && this._visits[beatId] > 0) {
+      return false;
+    }
+
     if (this._visits[beatId]) {
       this._visits[beatId]++;
     } else {
@@ -43,6 +50,8 @@ export class Universe {
     }
 
     this._history.push(beatId);
+
+    return true;
   }
 }
 
