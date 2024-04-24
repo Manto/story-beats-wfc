@@ -2,45 +2,46 @@ import { StoryBeatsLoader } from "./StoryBeatsLoader";
 import { BeatRequirement, ComparisonType } from "./BeatRequirement";
 import { BeatType, StoryBeat } from "./StoryBeat";
 
-test("Load story beats from JSON", () => {
-  const json = `
-    [
+const trivialBeats = `
+[
+  {
+    "beatId": "1",
+    "resolution": 1,
+    "beatType": "DRAMATIC",
+    "inkFilename": "file1.ink",
+    "allowRepeatVisit": true,
+    "requirements": [
       {
-        "beatId": "1",
-        "resolution": 1,
-        "beatType": "DRAMATIC",
-        "inkFilename": "file1.ink",
-        "allowRepeatVisit": true,
-        "requirements": [
-          {
-            "factName": "Hello",
-            "comparison": "EQ",
-            "value": 123
-          },
-          {
-            "factName": "Name",
-            "comparison": "EQ",
-            "value": "Bing"
-          }
-        ]
+        "factName": "Hello",
+        "comparison": "EQ",
+        "value": 123
       },
       {
-        "beatId": "2",
-        "resolution": -1,
-        "beatType": "PROCEDURAL",
-        "inkFilename": "file2.ink",
-        "allowRepeatVisit": false,
-        "requirements": [
-          {
-            "factName": "Hello",
-            "comparison": "GT",
-            "value": 100
-          }
-        ]
+        "factName": "Name",
+        "comparison": "EQ",
+        "value": "Bing"
       }
     ]
-  `;
+  },
+  {
+    "beatId": "2",
+    "resolution": -1,
+    "beatType": "PROCEDURAL",
+    "inkFilename": "file2.ink",
+    "allowRepeatVisit": false,
+    "requirements": [
+      {
+        "factName": "Hello",
+        "comparison": "GT",
+        "value": 100
+      }
+    ]
+  }
+]
+`;
 
+test("Load story beats from JSON", () => {
+  const json = trivialBeats;
   const expectedStoryBeats: StoryBeat[] = [
     new StoryBeat("1", {
       resolution: 1,
@@ -68,45 +69,12 @@ test("Load story beats from JSON", () => {
 });
 
 test("Throw error for duplicate beat ID", () => {
-  const json = `
-    [
-      {
-        "beatId": "1",
-        "resolution": 1,
-        "beatType": "PROCEDURAL",
-        "inkFilename": "file1.ink",
-        "allowRepeatVisit": true,
-        "requirements": [
-          {
-            "factName": "Hello",
-            "comparison": "Equal",
-            "value": 123
-          },
-          {
-            "factName": "Name",
-            "comparison": "Equal",
-            "value": "Bing"
-          }
-        ]
-      },
-      {
-        "beatId": "1",
-        "resolution": -1,
-        "beatType": "PROCEDURAL",
-        "inkFilename": "file2.ink",
-        "allowRepeatVisit": false,
-        "requirements": [
-          {
-            "factName": "Hello",
-            "comparison": "GreaterThan",
-            "value": 100
-          }
-        ]
-      }
-    ]
-  `;
+  const json = structuredClone(trivialBeats);
+  const parsedJson = JSON.parse(json);
+  parsedJson[1].beatId = parsedJson[0].beatId;
+  const duplicateJson = JSON.stringify(parsedJson);
 
   expect(() => {
-    StoryBeatsLoader.loadFromJson(json);
-  }).toThrowError("Duplicate beat ID: 1");
+    StoryBeatsLoader.loadFromJson(duplicateJson);
+  }).toThrow("Duplicate beat ID: 1");
 });
