@@ -1,7 +1,11 @@
 // Data loader class for initializing a group of story beats
 // from JSON file or other data source.
 
-import { BeatRequirement } from "./BeatRequirement";
+import {
+  BeatRequirement,
+  FactRequirement,
+  RequirementType,
+} from "./BeatRequirement";
 import { StoryBeat } from "./StoryBeat";
 
 export class StoryBeatsLoader {
@@ -31,12 +35,19 @@ export class StoryBeatsLoader {
       // Add requirements to the story beat
       if (beatData.requirements) {
         for (const reqData of beatData.requirements) {
-          const req = new BeatRequirement(
-            reqData.factName,
-            reqData.comparison,
-            reqData.value
-          );
-          beat.requirements.push(req);
+          if (reqData.type === RequirementType.Fact) {
+            const req = new FactRequirement(
+              reqData.factName,
+              reqData.comparison,
+              reqData.value
+            );
+            beat.requirements.push(req);
+          } else if (reqData.type === RequirementType.History) {
+            //
+          } else {
+            // Throw error for unknown requirement type
+            throw new Error(`Unknown requirement type: ${reqData.type}`);
+          }
         }
       }
 

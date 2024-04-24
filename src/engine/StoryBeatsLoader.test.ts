@@ -1,5 +1,9 @@
 import { StoryBeatsLoader } from "./StoryBeatsLoader";
-import { BeatRequirement, ComparisonType } from "./BeatRequirement";
+import {
+  BeatRequirement,
+  ComparisonType,
+  FactRequirement,
+} from "./BeatRequirement";
 import { BeatType, StoryBeat } from "./StoryBeat";
 
 const trivialBeats = `
@@ -12,11 +16,13 @@ const trivialBeats = `
     "allowRepeatVisit": true,
     "requirements": [
       {
+        "type": "FACT",
         "factName": "Hello",
         "comparison": "EQ",
         "value": 123
       },
       {
+        "type": "FACT",
         "factName": "Name",
         "comparison": "EQ",
         "value": "Bing"
@@ -31,6 +37,8 @@ const trivialBeats = `
     "allowRepeatVisit": false,
     "requirements": [
       {
+        "type": "FACT",
+        "FactRequirement": "FACT",
         "factName": "Hello",
         "comparison": "GT",
         "value": 100
@@ -49,8 +57,8 @@ test("Load story beats from JSON", () => {
       inkFilename: "file1.ink",
       allowRepeatVisit: true,
       requirements: [
-        new BeatRequirement("Hello", ComparisonType.Equal, 123),
-        new BeatRequirement("Name", ComparisonType.Equal, "Bing"),
+        new FactRequirement("Hello", ComparisonType.Equal, 123),
+        new FactRequirement("Name", ComparisonType.Equal, "Bing"),
       ],
     }),
     new StoryBeat("2", {
@@ -59,7 +67,7 @@ test("Load story beats from JSON", () => {
       inkFilename: "file2.ink",
       allowRepeatVisit: false,
       requirements: [
-        new BeatRequirement("Hello", ComparisonType.GreaterThan, 100),
+        new FactRequirement("Hello", ComparisonType.GreaterThan, 100),
       ],
     }),
   ];

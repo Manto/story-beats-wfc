@@ -1,4 +1,8 @@
-import { BeatRequirement, ComparisonType } from "../src/engine/BeatRequirement";
+import {
+  BeatRequirement,
+  ComparisonType,
+  FactRequirement,
+} from "../src/engine/BeatRequirement";
 import { UniverseFactsType } from "../src/engine/Universe";
 
 test("Basic BeatRequirements validation logic", () => {
@@ -6,28 +10,28 @@ test("Basic BeatRequirements validation logic", () => {
     Hello: 123,
     Name: "Bing",
   };
-  const eqReq = new BeatRequirement("Hello", ComparisonType.Equal, 123);
+  const eqReq = new FactRequirement("Hello", ComparisonType.Equal, 123);
   expect(eqReq.hasMet(facts)).toBe(true);
 
-  const eqReq2 = new BeatRequirement("Name", ComparisonType.Equal, "Bing");
+  const eqReq2 = new FactRequirement("Name", ComparisonType.Equal, "Bing");
   expect(eqReq2.hasMet(facts)).toBe(true);
 
-  const neqReq = new BeatRequirement("Hello", ComparisonType.NotEqual, 123);
+  const neqReq = new FactRequirement("Hello", ComparisonType.NotEqual, 123);
   expect(neqReq.hasMet(facts)).toBe(false);
 
-  const gtReq = new BeatRequirement("Hello", ComparisonType.GreaterThan, 100);
+  const gtReq = new FactRequirement("Hello", ComparisonType.GreaterThan, 100);
   expect(gtReq.hasMet(facts)).toBe(true);
 
-  const ltReq = new BeatRequirement("Hello", ComparisonType.LessThan, 200);
+  const ltReq = new FactRequirement("Hello", ComparisonType.LessThan, 200);
   expect(ltReq.hasMet(facts)).toBe(true);
 });
 
 // https://stackoverflow.com/questions/5630123/javascript-string-integer-comparisons
-test("BeatRequirements type mismatch", () => {
+test("FactRequirement req value type mismatch", () => {
   const facts: UniverseFactsType = {
     Hello: 123,
     Name: "Bing",
   };
-  const eqReq = new BeatRequirement("Name", ComparisonType.GreaterThan, 1);
+  const eqReq = new FactRequirement("Name", ComparisonType.GreaterThan, 1);
   expect(eqReq.hasMet(facts)).toBe(false);
 });
