@@ -30,6 +30,20 @@ export class Universe {
     return this._history;
   }
 
+  public getState(): Record<string, any> {
+    return {
+      facts: this._facts,
+      visits: this._visits,
+      history: this._history,
+    };
+  }
+
+  public restoreState(state: Record<string, any>) {
+    this._facts = state.facts;
+    this._visits = state.visits;
+    this._history = state.history;
+  }
+
   /**
    * Store a visit to a new story beat.
    * @param storyBeat The ID of the story beat.
@@ -52,6 +66,15 @@ export class Universe {
     this._history.push(beatId);
 
     return true;
+  }
+
+  /**
+   *
+   * @returns A distribution of the next story beat.
+   * Keys are the beatId, values are the probability of the beat being selected (0-1)
+   */
+  public computeDistributionForNextBeat(): Record<string, number> {
+    return {};
   }
 }
 
