@@ -7,7 +7,32 @@ export enum RequirementType {
 
 export interface BeatRequirement {
   requirementType: RequirementType;
-  hasMet: (facts: UniverseFactsType) => boolean;
+  hasMet: (facts: UniverseFactsType, visits: Record<string, number>) => boolean;
+}
+
+export class HistoryRequirement implements BeatRequirement {
+  requirementType: RequirementType = RequirementType.History;
+  readonly beatId: string = "";
+  readonly comparison: ComparisonType = ComparisonType.Equal;
+  readonly value: number = 0;
+
+  hasMet(facts: UniverseFactsType, visits: Record<string, number>): boolean {
+    const beatVisits = visits[this.beatId] || 0;
+
+    if (this.comparison === ComparisonType.Equal) {
+      return this.value === beatVisits;
+    }
+    if (this.comparison === ComparisonType.NotEqual) {
+      return this.value !== beatVisits;
+    }
+    if (this.comparison === ComparisonType.GreaterThan) {
+      return beatVisits > this.value;
+    }
+    if (this.comparison === ComparisonType.LessThan) {
+      return beatVisits < this.value;
+    }
+    return false;
+  }
 }
 
 export class FactRequirement implements BeatRequirement {
@@ -26,7 +51,7 @@ export class FactRequirement implements BeatRequirement {
     this.value = value;
   }
 
-  hasMet(facts: UniverseFactsType): boolean {
+  hasMet(facts: UniverseFactsType, visits: Record<string, number>): boolean {
     const factValue = facts[this.factName];
 
     // If fact cannot be found, return undefined.

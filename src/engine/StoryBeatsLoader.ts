@@ -1,11 +1,7 @@
 // Data loader class for initializing a group of story beats
 // from JSON file or other data source.
 
-import {
-  BeatRequirement,
-  FactRequirement,
-  RequirementType,
-} from "./BeatRequirement";
+import { FactRequirement, RequirementType } from "./BeatRequirement";
 import { StoryBeat } from "./StoryBeat";
 
 export class StoryBeatsLoader {
