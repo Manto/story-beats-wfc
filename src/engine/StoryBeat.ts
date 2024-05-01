@@ -7,12 +7,15 @@ import { BeatRequirement } from "./BeatRequirement";
  * but the actual implementation can vary.
  */
 export class StoryBeat {
-  readonly beatId: string = "";
-  readonly resolution: BeatResolution = 0;
-  readonly beatType: BeatType = BeatType.Unknown;
-  readonly inkFilename: string = "";
-  readonly requirements: BeatRequirement[] = [];
-  readonly allowRepeatVisit: boolean = false;
+  public beatId: string = "";
+  public resolution: BeatResolution = 0;
+  public beatType: BeatType = BeatType.Unknown;
+  public inkFilename: string = "";
+  public requirements: BeatRequirement[] = [];
+  public allowRepeatVisit: boolean = false;
+  public summary: string = "";
+  public created: Date = new Date();
+  public updated: Date = new Date();
 
   // How many times this beat has been played
   public visitCount: number = 0;
@@ -25,6 +28,9 @@ export class StoryBeat {
       inkFilename?: string;
       requirements?: BeatRequirement[];
       allowRepeatVisit?: boolean;
+      summary?: string;
+      created?: Date;
+      updated?: Date;
     }
   ) {
     this.beatId = beatId;
@@ -43,6 +49,15 @@ export class StoryBeat {
       }
       if (params.allowRepeatVisit !== undefined) {
         this.allowRepeatVisit = params.allowRepeatVisit;
+      }
+      if (params.summary !== undefined) {
+        this.summary = params.summary;
+      }
+      if (params.created !== undefined) {
+        this.created = params.created;
+      }
+      if (params.updated !== undefined) {
+        this.updated = params.updated;
       }
     }
   }
